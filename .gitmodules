@@ -1,0 +1,3 @@
+[submodule "EurekaConfig"]
+	path = EurekaConfig
+	url = https://github.com/KAMA7775/EurekaConfig.git
