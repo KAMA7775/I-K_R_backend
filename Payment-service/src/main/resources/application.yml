@@ -1,0 +1,7 @@
+spring:
+ application:
+   name: Payment-service
+stripe:
+  api:
+    secretKey: pk_test_51R5RJRF3qxDhrnWA3PAz4QFTIRkuN1cXr0K7z3nKwMNy6lDPBw4j5DP2cLgBw4mq2vD5hvBt25x3fA49e3b0EEya00NEUePt8Q
+    publishableKey: pk_test_51R5RJRF3qxDhrnWA3PAz4QFTIRkuN1cXr0K7z3nKwMNy6lDPBw4j5DP2cLgBw4mq2vD5hvBt25x3fA49e3b0EEya00NEUePt8Q
