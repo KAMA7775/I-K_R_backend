@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="tour-service")
+@Table(name="tour")
 public class Tour {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +18,11 @@ public class Tour {
     private Duration duration;
     private int price;
     private int quantity;
+    private String imageUrl;
     public Tour(){
 
     }
-    public Tour(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity ){
+    public Tour(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl ){
         this.id= id;
         this.destination = destination;
         this.region= region;
@@ -30,6 +31,7 @@ public class Tour {
         this.duration= duration;
         this.price=price;
         this.quantity= quantity;
+        this.imageUrl=imageUrl;
     }
 
     public Long getId() {
@@ -79,5 +81,13 @@ public class Tour {
     }
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
