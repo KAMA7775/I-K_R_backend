@@ -1,7 +1,23 @@
 spring:
- application:
-   name: Payment-service
+  application:
+    name: Payment-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Payment-service
+    username: postgres
+    password: 62760510akmt
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+server:
+    port: 8089
 stripe:
   api:
-    secretKey: pk_test_51R5RJRF3qxDhrnWA3PAz4QFTIRkuN1cXr0K7z3nKwMNy6lDPBw4j5DP2cLgBw4mq2vD5hvBt25x3fA49e3b0EEya00NEUePt8Q
+    secretKey: sk_test_51R5RJRF3qxDhrnWAQ1YBxNFQ4oP3awBM1T9ZIvuMTCwBxrqVpK0KXMNunv7biZB6GVkjrRlTY21yqIAssCKNdfaZ00gwvHcDx7
     publishableKey: pk_test_51R5RJRF3qxDhrnWA3PAz4QFTIRkuN1cXr0K7z3nKwMNy6lDPBw4j5DP2cLgBw4mq2vD5hvBt25x3fA49e3b0EEya00NEUePt8Q

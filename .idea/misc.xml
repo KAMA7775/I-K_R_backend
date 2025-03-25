@@ -5,8 +5,17 @@
     <file type="web" url="file://$PROJECT_DIR$/Admin-service" />
     <file type="web" url="file://$PROJECT_DIR$/Booking-service" />
     <file type="web" url="file://$PROJECT_DIR$/Payment-service" />
+    <file type="web" url="file://$PROJECT_DIR$/spring-cloud-eureka" />
     <file type="web" url="file://$PROJECT_DIR$/spring-cloud-gateway" />
     <file type="web" url="file://$PROJECT_DIR$/Tour-service" />
+    <file type="web" url="file://$PROJECT_DIR$/User-service/resorts" />
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Hotel-Service/pom.xml" />
+      </list>
+    </option>
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

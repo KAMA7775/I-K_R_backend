@@ -36,6 +36,30 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/User-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/User-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/User-service/resorts" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/User-service/resorts" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/spring-cloud-eureka" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/spring-cloud-eureka" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/spring-cloud-gateway" />
         <option name="modules">
           <set>
