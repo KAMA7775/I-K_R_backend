@@ -1,0 +1,19 @@
+services:
+  eureka-server:
+    image: spring-cloud-eureka
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    environment:
+      - eureka.client.register-with-eureka=false
+      - eureka.client.fetch-registry=false
+      - eureka.server.wait-time-in-ms-when-sync-empty=0
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
