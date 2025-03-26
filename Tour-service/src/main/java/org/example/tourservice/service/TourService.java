@@ -54,4 +54,15 @@ public class TourService {
                     return repo.save(tour);
                 }).orElseThrow(() -> new RuntimeException("tour not found"));
     }
+    public boolean reserveTour(Long tourId, int quantity) {
+        Optional<Tour> optionalTour = repo.findById(tourId);
+        if (optionalTour.isEmpty()) return false;
+
+        Tour tour = optionalTour.get();
+        if (tour.getQuantity() < quantity) return false;
+
+        tour.setQuantity(tour.getQuantity() - quantity);
+        repo.save(tour);
+        return true;
+    }
 }
