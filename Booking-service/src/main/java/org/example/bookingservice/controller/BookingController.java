@@ -2,7 +2,7 @@ package org.example.bookingservice.controller;
 
 import org.example.bookingservice.dto.BookingResponse;
 import org.example.bookingservice.dto.TourBookingDto;
-import org.example.bookingservice.dto.TourBookingHandler;
+import org.example.bookingservice.service.TourBookingHandler;
 import org.example.bookingservice.entity.BookingType;
 import org.example.bookingservice.service.BookingRouter;
 import org.springframework.http.ResponseEntity;
