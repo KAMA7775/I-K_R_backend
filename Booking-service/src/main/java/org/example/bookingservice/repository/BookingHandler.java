@@ -8,3 +8,4 @@ public interface BookingHandler <T extends BookingDto>{
     BookingResponse handleBooking(T request);
     BookingType getSupportedType();
 }
+
