@@ -3,6 +3,7 @@ package org.example.tourservice.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -23,8 +24,11 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/tours").permitAll()
-                .requestMatchers("/tours/admin/**").hasAnyRole("ADMIN", "MODERATOR")
+                .requestMatchers(HttpMethod.GET,"/tours").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/tours/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/tours/create").hasAnyRole("ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.PUT, "/tours/**").hasAnyRole("ADMIN", "MODERATOR")
+                        .requestMatchers(HttpMethod.DELETE,"tours/**").hasAnyRole("ADMIN", "MODERATOR")
                 .anyRequest().authenticated())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
