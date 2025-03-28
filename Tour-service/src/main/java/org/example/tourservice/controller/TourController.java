@@ -1,26 +1,36 @@
 package org.example.tourservice.controller;
 
+import com.example.saga.TourBookingStartedEvent;
 import org.example.tourservice.dto.BookingDto;
 import org.example.tourservice.dto.TourBookingRequest;
 import org.example.tourservice.dto.TourDto;
 import org.example.tourservice.entity.Tour;
+import org.example.tourservice.repository.TourRepository;
 import org.example.tourservice.service.TourSagaStarter;
 import org.example.tourservice.service.TourService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tours")
 public class TourController {
     private TourService service;
     private final TourSagaStarter sagaStarter;
-    public TourController(TourService service, TourSagaStarter sagaStarter){
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private TourRepository tourRepository;
+    public TourController(TourService service, TourSagaStarter sagaStarter, TourRepository tourRepository, KafkaTemplate<String, Object> kafkaTemplate){
         this.service = service;
         this.sagaStarter = sagaStarter;
+        this.kafkaTemplate=kafkaTemplate;
+        this.tourRepository=tourRepository;
     }
     @GetMapping
     public ResponseEntity<List<TourDto>> getAllTour(){
@@ -57,12 +67,24 @@ public class TourController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{id}/book")
-    public ResponseEntity<String> bookTour(@PathVariable Long id,
-                                           @RequestBody TourBookingRequest dto) {
-        String sagaId = sagaStarter.startTourBooking(id, dto.getUserId(), dto.getQuantity());
+    @PostMapping("/{tourId}/book")
+    public ResponseEntity<String> bookTour(
+            @PathVariable Long tourId,
+            @RequestBody TourBookingRequest request
+    ) {
+        Optional<Tour> tourOptional = tourRepository.findById(tourId);
+        if (tourOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Tour with ID " + tourId + " not found.");
+        }
+
+        String sagaId = UUID.randomUUID().toString();
+        kafkaTemplate.send("booking.tour.started", sagaId,
+                new TourBookingStartedEvent(sagaId, tourId, request.getUserId()));
+
         return ResponseEntity.ok("Tour booked, saga ID: " + sagaId);
     }
+
 
 
 }
