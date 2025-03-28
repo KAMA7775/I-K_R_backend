@@ -73,4 +73,5 @@ public class TourDto {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
+
 }

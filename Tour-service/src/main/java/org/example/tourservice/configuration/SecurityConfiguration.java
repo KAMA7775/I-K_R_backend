@@ -25,6 +25,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET,"/tours").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/tours/{id}/book").permitAll()
                         .requestMatchers(HttpMethod.GET,"/tours/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/tours/create").hasAnyRole("ADMIN", "MODERATOR")
                         .requestMatchers(HttpMethod.PUT, "/tours/**").hasAnyRole("ADMIN", "MODERATOR")

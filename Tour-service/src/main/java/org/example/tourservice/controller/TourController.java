@@ -1,7 +1,10 @@
 package org.example.tourservice.controller;
 
+import org.example.tourservice.dto.BookingDto;
+import org.example.tourservice.dto.TourBookingRequest;
 import org.example.tourservice.dto.TourDto;
 import org.example.tourservice.entity.Tour;
+import org.example.tourservice.service.TourSagaStarter;
 import org.example.tourservice.service.TourService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +17,10 @@ import java.util.List;
 @RequestMapping("/tours")
 public class TourController {
     private TourService service;
-    public TourController(TourService service){
+    private final TourSagaStarter sagaStarter;
+    public TourController(TourService service, TourSagaStarter sagaStarter){
         this.service = service;
+        this.sagaStarter = sagaStarter;
     }
     @GetMapping
     public ResponseEntity<List<TourDto>> getAllTour(){
@@ -51,5 +56,13 @@ public class TourController {
         service.deleteTour(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/{id}/book")
+    public ResponseEntity<String> bookTour(@PathVariable Long id,
+                                           @RequestBody TourBookingRequest dto) {
+        String sagaId = sagaStarter.startTourBooking(id, dto.getUserId(), dto.getQuantity());
+        return ResponseEntity.ok("Tour booked, saga ID: " + sagaId);
+    }
+
 
 }

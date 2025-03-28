@@ -1,13 +1,10 @@
 package org.example.tourservice.dto;
 
-public abstract class BookingDto {
-    protected String userId;
-    protected int quantity;
+public class TourBookingRequest {
+    private String userId;
+    private int quantity;
 
-    public BookingDto(String userId, int quantity) {
-        this.userId = userId;
-        this.quantity = quantity;
-    }
+    public TourBookingRequest() {}
 
     public String getUserId() {
         return userId;

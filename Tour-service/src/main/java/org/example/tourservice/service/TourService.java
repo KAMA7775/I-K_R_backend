@@ -65,4 +65,10 @@ public class TourService {
         repo.save(tour);
         return true;
     }
+    public void rollbackReservation(Long tourId) {
+        repo.findById(tourId).ifPresent(tour -> {
+            tour.setQuantity(tour.getQuantity() + 1);
+            repo.save(tour);
+        });
+    }
 }
