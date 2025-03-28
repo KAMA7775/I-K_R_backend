@@ -21,6 +21,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/tours")
+@CrossOrigin(origins = "http://localhost:3000")
 public class TourController {
     private TourService service;
     private final TourSagaStarter sagaStarter;
