@@ -1,5 +1,6 @@
 package org.example.bookingservice.controller;
 
+import com.example.saga.TourBookingStartedEvent;
 import org.example.bookingservice.dto.BookingResponse;
 import org.example.bookingservice.dto.TourBookingDto;
 import org.example.bookingservice.repository.BookingHandler;
@@ -7,24 +8,25 @@ import org.example.bookingservice.service.TourBookingHandler;
 import org.example.bookingservice.entity.BookingType;
 import org.example.bookingservice.service.BookingRouter;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/bookings")
 public class BookingController {
-    private final BookingHandler<TourBookingDto> tourBookingHandler;
+    private final KafkaTemplate<String, Object> kafka;
 
-    public BookingController(TourBookingHandler tourBookingHandler) {
-        this.tourBookingHandler = tourBookingHandler;
+    public BookingController(KafkaTemplate<String, Object> kafka) {
+        this.kafka = kafka;
     }
 
-    @PostMapping("/tour")
-    public ResponseEntity<BookingResponse> bookTour(@RequestBody TourBookingDto dto) {
-        BookingResponse response = tourBookingHandler.handleBooking(dto);
-        return ResponseEntity.ok(response);
+    @PostMapping("/start-tour")
+    public ResponseEntity<String> startTour(@RequestParam Long tourId, @RequestParam String userId) {
+        String sagaId = UUID.randomUUID().toString();
+        kafka.send("booking.tour.started", sagaId, new TourBookingStartedEvent(sagaId, tourId, userId));
+        return ResponseEntity.ok("Saga started: " + sagaId);
     }
 
 }
