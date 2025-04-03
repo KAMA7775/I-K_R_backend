@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class TourDto {
+    private Long id;
     private String destination;
     private String region;
     private String description;
@@ -13,7 +14,8 @@ public class TourDto {
     private int quantity;
     private String imageUrl;
     public TourDto(){}
-    public TourDto(String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl ){
+    public TourDto(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl ){
+        this.id = id;
         this.destination = destination;
         this.region= region;
         this.description = description;
@@ -23,6 +25,15 @@ public class TourDto {
         this.quantity= quantity;
         this.imageUrl=imageUrl;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getDestination() {
         return destination;
     }

@@ -16,6 +16,7 @@ public class TourService {
     }
     public List<TourDto>getAllTour(){
         return repo.findAll().stream().map(tour -> new TourDto(
+                tour.getId(),
                         tour.getDestination(),
                         tour.getRegion(),
                         tour.getDescription(),

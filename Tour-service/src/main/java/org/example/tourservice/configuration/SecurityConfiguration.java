@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/tours/create").hasAnyRole("ADMIN", "MODERATOR")
                         .requestMatchers(HttpMethod.PUT, "/tours/**").hasAnyRole("ADMIN", "MODERATOR")
                         .requestMatchers(HttpMethod.DELETE,"tours/**").hasAnyRole("ADMIN", "MODERATOR")
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
