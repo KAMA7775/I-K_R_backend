@@ -86,6 +86,12 @@ public class TourController {
         return ResponseEntity.ok("Tour booked, saga ID: " + sagaId);
     }
 
+    @GetMapping("/{tourId}/check-availability")
+    public ResponseEntity<Boolean> checkAvailability(@PathVariable Long tourId) {
+        return tourRepository.findById(tourId)
+                .map(tour -> ResponseEntity.ok(tour.getQuantity() > 0))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(false));
+    }
 
 
 }
