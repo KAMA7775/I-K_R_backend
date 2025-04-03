@@ -50,32 +50,4 @@ public class BookingSagaService {
         ));
         kafka.send("booking.tour.compensate", new CancelTourBookingEvent(event.getSagaId(), event.getTourId()));
     }
-    @Autowired
-    private RestTemplate restV;
-
-    @KafkaListener(topics = "booking.tour.started", groupId = "booking-group")
-    public void handleBookingStarted(TourBookingStartedEvent event) {
-        System.out.println("📥 Получено событие booking.tour.started: " + event);
-
-        String url = "http://tour-service/tours/" + event.getTourId() + "/check-availability";
-
-        try {
-            ResponseEntity<Boolean> response = restV.getForEntity(url, Boolean.class);
-
-            if (Boolean.TRUE.equals(response.getBody())) {
-                kafka.send("booking.tour.success", event.getSagaId(),
-                        new TourBookingSucceededEvent(event.getSagaId(), event.getTourId()));
-                System.out.println("✅ Тур доступен — отправлен booking.tour.success");
-            } else {
-                kafka.send("booking.tour.failed", event.getSagaId(),
-                        new TourBookingFailedEvent(event.getSagaId(), event.getTourId(), "No spots available"));
-                System.out.println("❌ Мест нет — отправлен booking.tour.failed");
-            }
-
-        } catch (Exception ex) {
-            kafka.send("booking.tour.failed", event.getSagaId(),
-                    new TourBookingFailedEvent(event.getSagaId(), event.getTourId(), "Tour not found or error"));
-            System.out.println("❌ Ошибка при обращении к tour-service — booking.tour.failed");
-        }
-    }
 }
