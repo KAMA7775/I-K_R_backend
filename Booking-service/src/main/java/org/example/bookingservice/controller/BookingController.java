@@ -22,11 +22,11 @@ public class BookingController {
         this.kafka = kafka;
     }
 
-    @PostMapping("/start-tour")
-    public ResponseEntity<String> startTour(@RequestParam Long tourId, @RequestParam String userId) {
-        String sagaId = UUID.randomUUID().toString();
-        kafka.send("booking.tour.started", sagaId, new TourBookingStartedEvent(sagaId, tourId, userId));
-        return ResponseEntity.ok("Saga started: " + sagaId);
-    }
+//    @PostMapping("/start-tour")
+//    public ResponseEntity<String> startTour(@RequestParam Long tourId, @RequestParam String userId) {
+//        String sagaId = UUID.randomUUID().toString();
+//        kafka.send("booking.tour.started", sagaId, new TourBookingStartedEvent(sagaId, tourId, userId));
+//        return ResponseEntity.ok("Saga started: " + sagaId);
+//    }
 
 }
