@@ -16,8 +16,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 server:
-    port: 8089
+    port: 8097
 stripe:
   api:
     secretKey: sk_test_51R5RJRF3qxDhrnWAQ1YBxNFQ4oP3awBM1T9ZIvuMTCwBxrqVpK0KXMNunv7biZB6GVkjrRlTY21yqIAssCKNdfaZ00gwvHcDx7
     publishableKey: pk_test_51R5RJRF3qxDhrnWA3PAz4QFTIRkuN1cXr0K7z3nKwMNy6lDPBw4j5DP2cLgBw4mq2vD5hvBt25x3fA49e3b0EEya00NEUePt8Q
+  webhook:
+    secret: whsec_14f133c50eb6b26fa99eefa6ea206b49d1e1143eb698eb852daf5b243b35897d
