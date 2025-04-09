@@ -4,6 +4,7 @@ public abstract class BookingDto {
     protected String userId;
     protected int quantity;
 
+
     public BookingDto(String userId, int quantity) {
         this.userId = userId;
         this.quantity = quantity;

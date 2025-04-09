@@ -12,8 +12,9 @@ public abstract class BookingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-
+    protected String status;
     protected String userId;
+
 
     protected int quantity;
 
@@ -53,5 +54,13 @@ public abstract class BookingEntity {
 
     public void setBookingTime(LocalDateTime bookingTime) {
         this.bookingTime = bookingTime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
