@@ -22,7 +22,7 @@ public class WebSocketController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @KafkaListener(topics = "payment-client-secret-topic", groupId = "booking-group")
+    @KafkaListener(topics = "payment.client.secret", groupId = "booking-group")
     public void handleClientSecret(PaymentClientSecretEvent event) {
         log.info("📨 Получен PaymentClientSecretEvent: userId={}, clientSecret={}",
                 event.getUserId(), event.getClientSecret());
