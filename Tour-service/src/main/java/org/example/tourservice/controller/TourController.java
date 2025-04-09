@@ -8,6 +8,8 @@ import org.example.tourservice.entity.Tour;
 import org.example.tourservice.repository.TourRepository;
 import org.example.tourservice.service.TourSagaStarter;
 import org.example.tourservice.service.TourService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -67,24 +69,8 @@ public class TourController {
         service.deleteTour(id);
         return ResponseEntity.noContent().build();
     }
+    private static final Logger log = LoggerFactory.getLogger(TourController.class);
 
-    @PostMapping("/{tourId}/book")
-    public ResponseEntity<String> bookTour(
-            @PathVariable Long tourId,
-            @RequestBody TourBookingRequest request
-    ) {
-        Optional<Tour> tourOptional = tourRepository.findById(tourId);
-        if (tourOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Tour with ID " + tourId + " not found.");
-        }
-
-        String sagaId = UUID.randomUUID().toString();
-        kafkaTemplate.send("booking.tour.started", sagaId,
-                new TourBookingStartedEvent(sagaId, tourId, request.getUserId()));
-
-        return ResponseEntity.ok("Tour booked, saga ID: " + sagaId);
-    }
 
     @GetMapping("/{tourId}/check-availability")
     public ResponseEntity<Boolean> checkAvailability(@PathVariable Long tourId) {
