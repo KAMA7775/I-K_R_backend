@@ -35,12 +35,12 @@ public class StripeService {
 
     @KafkaListener(topics = "payment.started", groupId = "payment-group")
     public void handlePaymentStarted(PaymentStartedEvent event) {
-        log.info("📥 Получено событие PaymentStartedEvent: sagaId={}, amount={}, currency={}",
+        log.info("Получено событие PaymentStartedEvent: sagaId={}, amount={}, currency={}",
                 event.getSagaId(), event.getAmount(), event.getCurrency());
 
         try {
             Stripe.apiKey = secretKey;
-            log.debug("🔐 Stripe API инициализирован");
+            log.debug("Stripe API инициализирован");
 
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                     .setAmount((long) event.getAmount())
@@ -54,7 +54,7 @@ public class StripeService {
 
             PaymentIntent paymentIntent = PaymentIntent.create(params);
             String clientSecret = paymentIntent.getClientSecret();
-            log.info("✅ PaymentIntent создан: id={}, clientSecret={}", paymentIntent.getId(), clientSecret);
+            log.info("PaymentIntent создан: id={}, clientSecret={}", paymentIntent.getId(), clientSecret);
 
             Payment payment = new Payment();
             payment.setBookingId(event.getBookingId());
@@ -62,17 +62,17 @@ public class StripeService {
             payment.setAmount(event.getAmount() / 100.0);
             payment.setStatus("PENDING");
             repo.save(payment);
-            log.info("💾 Платеж сохранён в БД: bookingId={}, status=PENDING", event.getBookingId());
+            log.info("Платеж сохранён в БД: bookingId={}, status=PENDING", event.getBookingId());
 
             PaymentClientSecretEvent clientSecretEvent = new PaymentClientSecretEvent(
                     event.getSagaId(), clientSecret, event.getUserId(), event.getBookingId()
             );
             kafka.send("payment.client.secret", clientSecretEvent);
-            log.info("📤 Отправлен event payment.client.secret: sagaId={}, bookingId={} ",
+            log.info("Отправлен event payment.client.secret: sagaId={}, bookingId={} ",
                     event.getSagaId(), event.getBookingId());
 
         } catch (Exception e) {
-            log.error("❌ Ошибка при создании платежа для sagaId={}: {}",
+            log.error("Ошибка при создании платежа для sagaId={}: {}",
                     event.getSagaId(), e.getMessage(), e);
             kafka.send("payment.failed",
                     new PaymentFailedEvent(event.getSagaId(), event.getBookingId(), e.getMessage()));
@@ -86,7 +86,7 @@ public class StripeService {
         repo.save(payment);
         String sagaId = findSagaIdFromStripe(paymentIntentId);
         kafka.send("payment.success", new PaymentSuccessEvent(sagaId, payment.getBookingId()));
-        log.info("🎉 Платеж подтверждён: paymentIntent={}, sagaId={}, bookingId={}",
+        log.info("Платеж подтверждён: paymentIntent={}, sagaId={}, bookingId={}",
                 paymentIntentId, sagaId, payment.getBookingId());
     }
 

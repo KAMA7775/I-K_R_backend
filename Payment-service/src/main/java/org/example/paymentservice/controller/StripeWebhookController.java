@@ -44,11 +44,11 @@ public class StripeWebhookController {
                 }
             }
 
-            return ResponseEntity.ok("✅ Webhook обработан");
+            return ResponseEntity.ok("Webhook обработан");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("❌ Ошибка webhook: " + e.getMessage());
+                    .body("Ошибка webhook: " + e.getMessage());
         }
     }
 }
