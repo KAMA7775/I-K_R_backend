@@ -122,7 +122,7 @@ public class BookingSagaService {
     private static final Logger log = LoggerFactory.getLogger(BookingSagaService.class);
     @KafkaListener(topics = "booking.tour.failed")
     public void handleTourFailed(TourBookingFailedEvent event) {
-        log.warn("❌ Сага провалилась: sagaId={}, reason={}", event.getSagaId(), event.getReason());
+        log.warn(" Сага провалилась: sagaId={}, reason={}", event.getSagaId(), event.getReason());
 
         SagaStatusEntity saga = sagaRepo.findById(event.getSagaId()).orElse(null);
         if (saga == null) {
@@ -144,16 +144,16 @@ public class BookingSagaService {
                 booking.setStatus("FAILED");
                 tourBookingRepo.save(booking);
             } else {
-                log.warn("⚠️ Не найдено бронирование для bookingId={}", event.getBookingId());
+                log.warn("Не найдено бронирование для bookingId={}", event.getBookingId());
             }
         } else {
-            log.warn("⚠️ bookingId = null в TourBookingFailedEvent, sagaId={}", event.getSagaId());
+            log.warn("bookingId = null в TourBookingFailedEvent, sagaId={}", event.getSagaId());
         }
 
         kafka.send("booking.tour.compensate", new CancelTourBookingEvent(
                 event.getSagaId(),
                 event.getTourId(),
-                event.getBookingId() // даже если null — лучше явно
+                event.getBookingId()
         ));
     }
 

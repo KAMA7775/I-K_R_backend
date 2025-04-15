@@ -5,6 +5,7 @@ import com.example.saga.TourBookingStartedEvent;
 import org.example.bookingservice.entity.TourBookingEntity;
 import org.example.bookingservice.repository.TourBookingRepository;
 
+import org.example.bookingservice.service.TourBookingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,12 @@ import java.util.UUID;
 public class BookingController {
     private final TourBookingRepository bookingRepo;
     private final KafkaTemplate<String, Object> kafka;
+    private final TourBookingService tourBookingService;
 
-    public BookingController(TourBookingRepository bookingRepo, KafkaTemplate<String, Object> kafka) {
+    public BookingController(TourBookingRepository bookingRepo, KafkaTemplate<String, Object> kafka, TourBookingService tourBookingService) {
         this.bookingRepo = bookingRepo;
         this.kafka = kafka;
+        this.tourBookingService=tourBookingService;
     }
 
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
@@ -61,7 +64,7 @@ public class BookingController {
                 request.getQuantity()
         ));
 
-        log.info("🚀 Сага запущена: sagaId={}, tourId={}, userId={}, bookingId={}, quantity={}",
+        log.info(" Сага запущена: sagaId={}, tourId={}, userId={}, bookingId={}, quantity={}",
                 sagaId, tourId, request.getUserId(), bookingId, request.getQuantity());
 
         return ResponseEntity.ok("Payment process started. Saga ID: " + sagaId);
@@ -74,4 +77,9 @@ public class BookingController {
         List<TourBookingEntity> bookings = bookingRepo.findByUserId(userId);
         return ResponseEntity.ok(bookings);
     }
+    @GetMapping("/alltourbookings")
+    public ResponseEntity<List<TourBookingEntity>> getAllTourBookings() {
+        return ResponseEntity.ok(tourBookingService.getAllTourBookings());
+    }
+
 }
