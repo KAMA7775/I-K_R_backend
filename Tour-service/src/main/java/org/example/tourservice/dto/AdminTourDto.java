@@ -3,7 +3,7 @@ package org.example.tourservice.dto;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class TourDto {
+public class AdminTourDto {
     private Long id;
     private String destination;
     private String region;
@@ -13,10 +13,11 @@ public class TourDto {
     private int price;
     private int quantity;
     private String imageUrl;
+    private boolean deleted = false;
 
 
-    public TourDto(){}
-    public TourDto(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl){
+    public AdminTourDto(){}
+    public AdminTourDto(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl, boolean deleted){
         this.id = id;
         this.destination = destination;
         this.region= region;
@@ -26,6 +27,7 @@ public class TourDto {
         this.price=price;
         this.quantity= quantity;
         this.imageUrl=imageUrl;
+        this.deleted=deleted;
 
     }
 
@@ -89,4 +91,11 @@ public class TourDto {
     }
 
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

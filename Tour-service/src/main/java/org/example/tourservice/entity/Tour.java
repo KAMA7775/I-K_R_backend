@@ -19,10 +19,11 @@ public class Tour {
     private int price;
     private int quantity;
     private String imageUrl;
+    private boolean deleted = false;
     public Tour(){
 
     }
-    public Tour(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl ){
+    public Tour(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl , boolean deleted){
         this.id= id;
         this.destination = destination;
         this.region= region;
@@ -32,6 +33,7 @@ public class Tour {
         this.price=price;
         this.quantity= quantity;
         this.imageUrl=imageUrl;
+        this.deleted=deleted;
     }
 
     public Long getId() {
@@ -89,5 +91,12 @@ public class Tour {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
