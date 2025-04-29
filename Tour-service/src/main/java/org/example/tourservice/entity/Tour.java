@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="tour")
@@ -13,17 +14,21 @@ public class Tour {
     private Long id;
     private String destination;
     private String region;
+    @Column(columnDefinition = "TEXT")
     private String description;
     private LocalDateTime dateTime;
     private Duration duration;
     private int price;
     private int quantity;
-    private String imageUrl;
+
+    @ElementCollection
+    @Column(columnDefinition = "TEXT")
+    private List<String> imageUrl;
     private boolean deleted = false;
     public Tour(){
 
     }
-    public Tour(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl , boolean deleted){
+    public Tour(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, List<String> imageUrl , boolean deleted){
         this.id= id;
         this.destination = destination;
         this.region= region;
@@ -85,13 +90,14 @@ public class Tour {
         this.quantity = quantity;
     }
 
-    public String getImageUrl() {
+    public List<String> getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(List<String> imageUrl) {
         this.imageUrl = imageUrl;
     }
+
     public boolean isDeleted() {
         return deleted;
     }

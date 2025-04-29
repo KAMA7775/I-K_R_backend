@@ -2,6 +2,7 @@ package org.example.tourservice.dto;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TourDto {
     private Long id;
@@ -12,11 +13,12 @@ public class TourDto {
     private Duration duration;
     private int price;
     private int quantity;
-    private String imageUrl;
+    private List<String> imageUrl;
+
 
 
     public TourDto(){}
-    public TourDto(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, String imageUrl){
+    public TourDto(Long id, String destination, String region, String description, LocalDateTime dateTime, Duration duration, int price, int quantity, List<String> imageUrl){
         this.id = id;
         this.destination = destination;
         this.region= region;
@@ -80,13 +82,12 @@ public class TourDto {
         this.quantity = quantity;
     }
 
-    public String getImageUrl() {
+
+    public List<String> getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(List<String> imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-
 }

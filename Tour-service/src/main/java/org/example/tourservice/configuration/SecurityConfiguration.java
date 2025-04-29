@@ -25,6 +25,16 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET,"/tours").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/swagger-ui.html",
+                                "/webjars/**"
+                        ).permitAll()
+                        .requestMatchers(HttpMethod.GET,"/tours/destination").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/tours/region").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/tours/filter").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tours/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tours/destination/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/tours/{tourId}/check-availability").permitAll()

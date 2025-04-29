@@ -2,6 +2,8 @@ package org.example.tourservice.configuration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -13,45 +15,43 @@ import java.util.Map;
 
 @Service
 public class JwtService {
-    private static final String SECRET_KEY = "YourVerySecretKeyForJwtTokenThatIsVerySecureAndLong";
-    public String extractUsername(String token) {
-        return extractClaim(token, "sub");
-    }
+        private static final String SECRET_KEY = "67877788989898989098989898909hhjvhdddddddddjjfdus8594";
+        private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
-    public String extractRole(String token) {
-        return extractClaim(token, "role");
-    }
+        public String extractUsername(String token) {
+            return extractClaim(token, "sub");
+        }
 
+        public String extractRole(String token) {
+            return extractClaim(token, "role");
+        }
 
-    public boolean isTokenValid(String token) {
-        try {
-            String[] parts = token.split("\\.");
-            if (parts.length != 3) return false;
+        public String extractUserId(String token) {
+            return extractClaim(token, "userIdStr");
+        }
 
-            String header = parts[0];
-            String payload = parts[1];
-            String signature = parts[2];
+        public boolean isTokenValid(String token) {
+            try {
+                Jwts.parser()
+                        .setSigningKey(key)
+                        .build()
+                        .parseClaimsJws(token);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
 
-            String expectedSignature = generateSignature(header, payload);
-            return signature.equals(expectedSignature);
-        } catch (Exception e) {
-            return false;
+        private String extractClaim(String token, String claimKey) {
+            try {
+                return Jwts.parser()
+                        .setSigningKey(key)
+                        .build()
+                        .parseClaimsJws(token)
+                        .getBody()
+                        .get(claimKey, String.class);
+            } catch (Exception e) {
+                throw new RuntimeException("Не удалось извлечь claim: " + claimKey);
+            }
         }
     }
-
-    private String extractClaim(String token, String claimKey) {
-        try {
-            String payload = new String(Base64.getUrlDecoder().decode(token.split("\\.")[1]));
-            Map<String, Object> claims = new ObjectMapper().readValue(payload, new TypeReference<>() {});
-            return claims.getOrDefault(claimKey, "").toString();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-    private String generateSignature(String header, String payload) throws Exception {
-        String data = header + "." + payload;
-        Mac hmac = Mac.getInstance("HmacSHA256");
-        hmac.init(new SecretKeySpec(SECRET_KEY.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(hmac.doFinal(data.getBytes(StandardCharsets.UTF_8)));
-    }
-}

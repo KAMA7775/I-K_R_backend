@@ -11,6 +11,7 @@ import org.example.tourservice.service.TourSagaStarter;
 import org.example.tourservice.service.TourService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,9 +19,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/tours")
@@ -120,5 +124,50 @@ public class TourController {
                 .filter(t -> !t.isDeleted())
                 .map(tour -> ResponseEntity.ok(tour.getQuantity() > 0))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(false));
+    }
+
+//    public ResponseEntity<List<TourDto>> filterTours(
+//            @RequestParam(required = false) String destination,
+//            @RequestParam(required = false) String region,
+//            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+//            @RequestParam(required = false) String duration
+//    ) {
+//        Duration parsedDuration = duration != null ? Duration.parse(duration) : null;
+//        List<Tour> tours = service.filterTours(destination, region, dateTime, parsedDuration);
+//
+//        List<TourDto> dtos = tours.stream()
+//                .filter(t -> !t.isDeleted())
+//                .map(t -> new TourDto(
+//                        t.getId(), t.getDestination(), t.getRegion(), t.getDescription(),
+//                        t.getDateTime(), t.getDuration(), t.getPrice(), t.getQuantity(), t.getImageUrl()))
+//                .collect(Collectors.toList());
+//
+//        return ResponseEntity.ok(dtos);
+//    }
+@GetMapping("/filter")
+public ResponseEntity<List<Tour>> filterTours(
+        @RequestParam(required = false) String destination,
+        @RequestParam(required = false) String region,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+        @RequestParam(required = false) String duration
+) {
+    Duration parsedDuration = null;
+    if (duration != null) {
+        parsedDuration = Duration.parse(duration);
+    }
+
+    List<Tour> tours = service.filterTours(destination, region, dateTime, parsedDuration);
+    return ResponseEntity.ok(tours);
+}
+
+    @GetMapping("/destination")
+    public ResponseEntity<List<String>> getAllDirections() {
+        List<String> directions = service.getAllUniqueDestinations();
+        return ResponseEntity.ok(directions);
+    }
+    @GetMapping("/region")
+    public ResponseEntity<List<String>> getAllRegions() {
+        List<String> regions = service.getAllUniqueRegions();
+        return ResponseEntity.ok(regions);
     }
 }

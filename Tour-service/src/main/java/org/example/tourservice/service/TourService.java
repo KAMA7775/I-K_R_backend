@@ -5,6 +5,9 @@ import org.example.tourservice.dto.TourDto;
 import org.example.tourservice.entity.Tour;
 import org.example.tourservice.repository.TourRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -103,4 +106,14 @@ public class TourService {
             repo.save(tour);
         });
     }
+    public List<Tour> filterTours(String destination, String region, LocalDateTime startDate, Duration duration) {
+        return repo.filterTours(destination, region, startDate, duration);
+    }
+    public List<String> getAllUniqueDestinations() {
+        return repo.findAllUniqueDestinations();
+    }
+    public List<String> getAllUniqueRegions() {
+        return repo.findAllUniqueRegions();
+    }
+
 }
